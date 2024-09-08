@@ -27,7 +27,7 @@
     </style>
 </head>
 <body class="bg-gray-200 p-6">
-    <div class="max-w-md bg-white p-6 rounded shadow-md">
+    <div class="max-w-md bg-white p-6 rounded shadow-md mx-auto">
         <h1 class="text-2xl font-bold mb-4">Main Menu</h1>
         <div class="flex flex-col space-y-4">
             <a href="#" onclick="openModal('registerSchoolModal')" class="bg-blue-500 text-white rounded menu-button">Register School</a>
@@ -41,7 +41,7 @@
 
         <!-- Button to view results -->
         <button id="viewResultsButton" class="bg-yellow-500 text-white rounded menu-button mt-4" onclick="viewResults()">View Results</button>
-        
+
         <!-- Modal for Register School -->
         <div id="registerSchoolModal" class="modal">
             <div class="modal-content bg-white rounded-lg shadow-lg p-6 mx-auto mt-20 max-w-md">
@@ -81,6 +81,43 @@
                 <div id="resultsList" class="mt-2 space-y-2"></div>
             </div>
         </div>
+        <!-- Section for Past Winners -->
+        <div class="mt-6">
+            <h2 class="text-xl font-bold mb-2">Past Winners (2020 Till Date)</h2>
+            <table class="min-w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr>
+                        <th class="border border-gray-300 p-2">Year</th>
+                        <th class="border border-gray-300 p-2">School</th>
+                        <th class="border border-gray-300 p-2">Winner</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-gray-300 p-2">2023</td>
+                        <td class="border border-gray-300 p-2">Greenwood High</td>
+                        <td class="border border-gray-300 p-2">John Doe</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="border border-gray-300 p-2">2022</td>
+                        <td class="border border-gray-300 p-2">Riverside School</td>
+                        <td class="border border-gray-300 p-2">Emily Johnson</td>
+                    </tr>
+               
+                    <tr>
+                        <td class="border border-gray-300 p-2">2021</td>
+                        <td class="border border-gray-300 p-2">Maple Leaf School</td>
+                        <td class="border border-gray-300 p-2">Sarah Davis</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="border border-gray-300 p-2">2020</td>
+                        <td class="border border-gray-300 p-2">Pine Valley School</td>
+                        <td class="border border-gray-300 p-2">Jessica Taylor</td>
+                    </tr>
+                </tbody>
+            </table>
     </div>
 
     <script src="registration.js"></script>
@@ -154,4 +191,3 @@
     </script>
 </body>
 </html>
-    

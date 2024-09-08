@@ -3,7 +3,7 @@ const registrationDeadline = new Date('2024-09-28 T00:00:00');
 function registerSchool() {
     const schoolName = document.getElementById('schoolName').value.trim(); // Trim whitespace
     const now = new Date();
-    
+
     if (now > registrationDeadline) {
         document.getElementById('registrationMessage').innerText = "Registration closed. Fine of N5,000 applies.";
         return;
@@ -24,7 +24,7 @@ function registerSchool() {
 
     document.getElementById('registrationMessage').innerText = `${schoolName} registered successfully!`;
     document.getElementById('studentRegistration').style.display = 'block';
-    
+
     // Update the display of registered schools immediately
     displayRegisteredSchools(); // Update the display in the modal
     closeModal('registerSchoolModal'); // Close the modal after registration
@@ -34,7 +34,7 @@ function registerStudent() {
     const studentName = document.getElementById('studentName').value.trim();
     const schoolDropdown = document.getElementById('schoolDropdown');
     const selectedSchool = schoolDropdown.value.trim(); // Get the selected school from the dropdown
-    
+
     if (!selectedSchool) {
         document.getElementById('studentRegistrationMessage').innerText = "Please select a registered school.";
         return;
@@ -50,7 +50,7 @@ function registerStudent() {
 
     // Check if the student is already registered under the same school
     const isStudentRegistered = students.some(student => student.name === studentName && student.school === selectedSchool);
-    
+
     if (isStudentRegistered) {
         document.getElementById('studentRegistrationMessage').innerText = `${studentName} is already registered in ${selectedSchool}.`;
         return;
@@ -68,7 +68,7 @@ function displayRegisteredSchools() {
     const schools = JSON.parse(localStorage.getItem('schools')) || [];
     const registeredSchoolDisplay = document.getElementById('registeredSchoolDisplay');
     const schoolDropdown = document.getElementById('schoolDropdown');
-    
+
     registeredSchoolDisplay.innerHTML = ''; // Clear previous display
     schoolDropdown.innerHTML = '<option value="">Select Registered School</option>'; // Reset dropdown
 
