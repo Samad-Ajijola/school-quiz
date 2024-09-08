@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.5); 
+        }
+        /* Button styles */
+        .menu-button {
+            width: 100%; 
+            padding: 12px;
+            text-align: center; 
+        }
+    </style>
+</head>
+<body class="bg-gray-200 p-6">
+    <div class="max-w-md bg-white p-6 rounded shadow-md">
+        <h1 class="text-2xl font-bold mb-4">Main Menu</h1>
+        <div class="flex flex-col space-y-4">
+            <a href="#" onclick="openModal('registerSchoolModal')" class="bg-blue-500 text-white rounded menu-button">Register School</a>
+            <a href="#" onclick="openModal('registerStudentModal')" class="bg-blue-500 text-white rounded menu-button">Register Student</a>
+            <a href="quiz.html" class="bg-blue-500 text-white rounded menu-button mt-4">Take Quiz</a>
+
+        </div>
+
+        <!-- Button to toggle registered schools visibility -->
+        <button id="toggleSchoolsButton" class="bg-green-500 text-white rounded menu-button mt-4" onclick="toggleRegisteredSchools()">Show Registered Schools</button>
+
+        <!-- Button to view results -->
+        <button id="viewResultsButton" class="bg-yellow-500 text-white rounded menu-button mt-4" onclick="viewResults()">View Results</button>
+        
+        <!-- Modal for Register School -->
+        <div id="registerSchoolModal" class="modal">
+            <div class="modal-content bg-white rounded-lg shadow-lg p-6 mx-auto mt-20 max-w-md">
+                <span class="close cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeModal('registerSchoolModal')">&times;</span>
+                <h2 class="text-xl font-semibold mb-4">Register School</h2>
+                <input type="text" id="schoolName" placeholder="School Name" class="border border-gray-300 p-2 rounded mb-4 w-full">
+                <button onclick="registerSchool()" class="bg-blue-500 text-white p-2 rounded">Submit</button>
+                <p id="registrationMessage" class="mt-2 text-red-500"></p>
+            </div>
+        </div>
+
+        <!-- Modal for Register Student -->
+        <div id="registerStudentModal" class="modal">
+            <div class="modal-content bg-white rounded-lg shadow-lg p-6 mx-auto mt-20 max-w-md">
+                <span class="close cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeModal('registerStudentModal')">&times;</span>
+                <h2 class="text-xl font-semibold mb-4">Register Student</h2>
+                <input type="text" id="studentName" placeholder="Student Name" class="border border-gray-300 p-2 rounded mb-4 w-full">
+                <select id="schoolDropdown" class="border border-gray-300 p-2 rounded mb-4 w-full">
+                    <option value="">Select Registered School</option>
+                </select>
+                <button onclick="registerStudent()" class="bg-blue-500 text-white p-2 rounded">Submit</button>
+                <p id="studentRegistrationMessage" class="mt-2 text-red-500"></p>
+            </div>
+        </div>
+
+        <!-- Registered Schools Container -->
+        <div id="registeredSchoolContainer" class="fixed top-1/4 right-5 bg-white border border-gray-300 rounded-lg p-4 shadow-lg z-50 hidden">
+            <h3 class="text-lg font-semibold mb-2">List of Registered Schools</h3>
+            <div id="registeredSchoolDisplay" class="mt-2 space-y-2"></div>
+        </div>
+
+        <!-- Modal for Viewing Results -->
+        <div id="resultsModal" class="modal">
+            <div class="modal-content bg-white rounded-lg shadow-lg p-6 mx-auto mt-20 max-w-md">
+                <span class="close cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeModal('resultsModal')">&times;</span>
+                <h2 class="text-xl font-semibold mb-4">Quiz Results</h2>
+                <div id="resultsList" class="mt-2 space-y-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="registration.js"></script>
+    <script>
+        // Function to open modal
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+            displayRegisteredSchools(); // Populate dropdown for other modals
+        }
+
+        // Function to close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        // Function to toggle visibility of registered schools
+        function toggleRegisteredSchools() {
+            const container = document.getElementById('registeredSchoolContainer');
+            const button = document.getElementById('toggleSchoolsButton');
+            if (container.classList.contains('hidden')) {
+                container.classList.remove('hidden');
+                button.innerText = 'Hide Registered Schools';
+            } else {
+                container.classList.add('hidden');
+                button.innerText = 'Show Registered Schools';
+            }
+        }
+
+        // Function to view results from local storage
+        function viewResults() {
+            const results = JSON.parse(localStorage.getItem("quizResults")) || [];
+            const resultsList = document.getElementById('resultsList');
+            resultsList.innerHTML = ''; // Clear previous results
+
+            if (results.length === 0) {
+                resultsList.innerHTML = '<p>No results found.</p>';
+            } else {
+                results.forEach((result, index) => {
+                    const resultItem = document.createElement('p');
+                    resultItem.innerText = `Attempt ${index + 1}: ${result.studentName} from ${result.schoolName} scored ${result.percentage}% (${result.score} out of 5).`;
+                    resultsList.appendChild(resultItem);
+                });
+            }
+
+            openModal('resultsModal'); // Show the results modal
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modals = document.getElementsByClassName('modal');
+            for (let i = 0; i < modals.length; i++) {
+                if (event.target == modals[i]) {
+                    modals[i].style.display = "none";
+                }
+            }
+        }
+
+        // Function to display registered schools
+        function displayRegisteredSchools() {
+            const registeredSchools = JSON.parse(localStorage.getItem('schools')) || [];
+            const display = document.getElementById('registeredSchoolDisplay');
+            display.innerHTML = ''; // Clear previous display
+
+            registeredSchools.forEach(school => {
+                const schoolItem = document.createElement('div');
+                schoolItem.className = 'bg-gray-100 border border-gray-300 rounded p-2 shadow-sm';
+                schoolItem.innerText = school.name;
+                display.appendChild(schoolItem);
+            });
+        }
+    </script>
+</body>
+</html>
+    

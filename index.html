@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            overflow: hidden; /* Prevent overflow */
+        }
+
+        .scrolling-message {
+            position: absolute;
+            white-space: nowrap;
+            animation: scroll 20s linear infinite;
+            top: 20px; /* Adjust as needed */
+            right: 100%; /* Start off-screen to the left */
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0); /* Start at the left */
+            }
+            100% {
+                transform: translateX(100vw); /* Move to the right off-screen */
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen relative">
+    <div class="scrolling-message">
+        Registration Deadline: [28th September 2024.... Late Registration Attracts a Fee of NGN5000.00]
+    </div>
+    <div class="text-center">
+        <h1 class="text-3xl font-bold mb-4">Welcome to the Quiz Competition</h1>
+        <a href="registration.html" class="bg-blue-500 text-white p-4 rounded">Click to Proceed</a>
+    </div>
+</body>
+</html>
