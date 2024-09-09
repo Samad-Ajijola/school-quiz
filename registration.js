@@ -132,7 +132,7 @@ function viewResults() {
     } else {
         results.forEach((result, index) => {
             const resultItem = document.createElement('p');
-            resultItem.innerText = `Attempt ${index + 1}: ${result.studentName} from ${result.schoolName} scored ${result.percentage}% (${result.score} out of 5).`;
+            resultItem.innerText = `Attempt ${index + 1}: ${result.studentName} from ${result.schoolName} scored ${result.percentage}% (${result.score} out of 10).`;
             resultsList.appendChild(resultItem);
         });
     }

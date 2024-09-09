@@ -42,6 +42,9 @@
         <!-- Button to view results -->
         <button id="viewResultsButton" class="bg-yellow-500 text-white rounded menu-button mt-4" onclick="viewResults()">View Results</button>
 
+         <!-- Add this button to retrieve past winners -->
+    <button id="retrieveWinnersButton" class="bg-purple-500 text-white rounded menu-button mt-4" onclick="retrieveWinners()">Retrieve Past Winners</button>
+
         <!-- Modal for Register School -->
         <div id="registerSchoolModal" class="modal">
             <div class="modal-content bg-white rounded-lg shadow-lg p-6 mx-auto mt-20 max-w-md">
@@ -67,57 +70,31 @@
             </div>
         </div>
 
-        <!-- Registered Schools Container -->
-        <div id="registeredSchoolContainer" class="fixed top-1/4 right-5 bg-white border border-gray-300 rounded-lg p-4 shadow-lg z-50 hidden">
-            <h3 class="text-lg font-semibold mb-2">List of Registered Schools</h3>
-            <div id="registeredSchoolDisplay" class="mt-2 space-y-2"></div>
-        </div>
-
         <!-- Modal for Viewing Results -->
         <div id="resultsModal" class="modal">
             <div class="modal-content bg-white rounded-lg shadow-lg p-6 mx-auto mt-20 max-w-md">
                 <span class="close cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeModal('resultsModal')">&times;</span>
-                <h2 class="text-xl font-semibold mb-4">Quiz Results</h2>
-                <div id="resultsList" class="mt-2 space-y-2"></div>
+                <h2 class="text-xl font-semibold mb-4">Past Winners</h2>
+                <table class="min-w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr>
+                            <th class="border border-gray-300 p-2">Year</th>
+                            <th class="border border-gray-300 p-2">School</th>
+                            <th class="border border-gray-300 p-2">Winner</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsList" class="space-y-2">
+                        <!-- Winners will be populated here -->
+                    </tbody>
+                </table>
             </div>
         </div>
-        <!-- Section for Past Winners -->
-        <div class="mt-6">
-            <h2 class="text-xl font-bold mb-2">Past Winners (2020 Till Date)</h2>
-            <table class="min-w-full border-collapse border border-gray-300">
-                <thead>
-                    <tr>
-                        <th class="border border-gray-300 p-2">Year</th>
-                        <th class="border border-gray-300 p-2">School</th>
-                        <th class="border border-gray-300 p-2">Winner</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="border border-gray-300 p-2">2023</td>
-                        <td class="border border-gray-300 p-2">Greenwood High</td>
-                        <td class="border border-gray-300 p-2">John Doe</td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="border border-gray-300 p-2">2022</td>
-                        <td class="border border-gray-300 p-2">Riverside School</td>
-                        <td class="border border-gray-300 p-2">Emily Johnson</td>
-                    </tr>
-               
-                    <tr>
-                        <td class="border border-gray-300 p-2">2021</td>
-                        <td class="border border-gray-300 p-2">Maple Leaf School</td>
-                        <td class="border border-gray-300 p-2">Sarah Davis</td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="border border-gray-300 p-2">2020</td>
-                        <td class="border border-gray-300 p-2">Pine Valley School</td>
-                        <td class="border border-gray-300 p-2">Jessica Taylor</td>
-                    </tr>
-                </tbody>
-            </table>
+        
+            <!-- Registered Schools Container -->
+        <div id="registeredSchoolContainer" class="fixed top-1/4 left-5 bg-white border border-gray-300 rounded-lg p-4 shadow-lg z-50 hidden md:top-1/4 md:left-5 md:bottom-auto md:right-auto md:relative md:transform md:-translate-y-0 md:-translate-x-0">
+            <h3 class="text-lg font-semibold mb-2">List of Registered Schools</h3>
+            <div id="registeredSchoolDisplay" class="mt-2 space-y-2"></div>
+        </div>
     </div>
 
     <script src="registration.js"></script>
@@ -187,6 +164,39 @@
                 schoolItem.innerText = school.name;
                 display.appendChild(schoolItem);
             });
+        }
+
+        // Store past winners in local storage on page load
+        window.onload = function() {
+            const pastWinners = [
+                { year: 2023, school: "Greenwood High", winner: "John Doe" },
+                { year: 2022, school: "Riverside School", winner: "Emily Johnson" },
+                { year: 2021, school: "Maple Leaf School", winner: "Sarah Davis" },
+                { year: 2020, school: "Pine Valley School", winner: "Jessica Taylor" }
+            ];
+            localStorage.setItem('pastWinners', JSON.stringify(pastWinners));
+        };
+
+        // Function to retrieve and display past winners in a table
+        function retrieveWinners() {
+            const winners = JSON.parse(localStorage.getItem('pastWinners')) || [];
+            const resultsList = document.getElementById('resultsList');
+            resultsList.innerHTML = ''; // Clear previous results
+
+            if (winners.length === 0) {
+                resultsList.innerHTML = '<tr><td colspan="3" class="border border-gray-300 p-2 text-center">No past winners found.</td></tr>';
+            } else {
+                winners.forEach(winner => {
+                    const winnerRow = document.createElement('tr');
+                    winnerRow.innerHTML = `
+                        <td class="border border-gray-300 p-2">${winner.year}</td>
+                        <td class="border border-gray-300 p-2">${winner.school}</td>
+                        <td class="border border-gray-300 p-2">${winner.winner}</td>
+                    `;
+                    resultsList.appendChild(winnerRow);
+                });
+            }
+            openModal('resultsModal'); // Open the modal to display results
         }
     </script>
 </body>
