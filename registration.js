@@ -149,3 +149,36 @@ window.onclick = function(event) {
         }
     }
 }
+
+// Store past winners in local storage on page load
+window.onload = function() {
+    const pastWinners = [
+        { year: 2023, school: "Greenwood High", winner: "John Doe" },
+        { year: 2022, school: "Riverside School", winner: "Emily Johnson" },
+        { year: 2021, school: "Maple Leaf School", winner: "Sarah Davis" },
+        { year: 2020, school: "Pine Valley School", winner: "Jessica Taylor" }
+    ];
+    localStorage.setItem('pastWinners', JSON.stringify(pastWinners));
+};
+
+// Function to retrieve and display past winners in a table
+function retrieveWinners() {
+    const winners = JSON.parse(localStorage.getItem('pastWinners')) || [];
+    const pWinners = document.getElementById('pWinners');
+    pWinners.innerHTML = ''; // Clear previous results
+
+    if (winners.length === 0) {
+        pWinners.innerHTML = '<tr><td colspan="3" class="border border-gray-300 p-2 text-center">No past winners found.</td></tr>';
+    } else {
+        winners.forEach(winner => {
+            const winnerRow = document.createElement('tr');
+            winnerRow.innerHTML = `
+                <td class="border border-gray-300 p-2">${winner.year}</td>
+                <td class="border border-gray-300 p-2">${winner.school}</td>
+                <td class="border border-gray-300 p-2">${winner.winner}</td>
+            `;
+            pWinners.appendChild(winnerRow);
+        });
+    }
+    openModal('pastWinnersModal'); // Open the modal to display results
+}
